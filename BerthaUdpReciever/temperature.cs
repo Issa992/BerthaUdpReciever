@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BerthaUdpReciever
 {
-    class Temp
+    class temperature
     {
         public int UserId { get; set; }
         public decimal Humidity { get; set; }
@@ -15,7 +15,7 @@ namespace BerthaUdpReciever
         public string Location { get; set; }
 
 
-        public Temp(int userId, decimal humidity, decimal temperatur, DateTime dateTime, string location)
+        public temperature(int userId, decimal humidity, decimal temperatur, DateTime dateTime, string location)
         {
             UserId = userId;
             Humidity = humidity;
@@ -23,7 +23,7 @@ namespace BerthaUdpReciever
             DateTime = dateTime;
             Location = location;
         }
-        public Temp()
+        public temperature()
         {
 
         }

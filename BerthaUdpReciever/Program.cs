@@ -14,8 +14,8 @@ namespace BerthaUdpReciever
     class Program
     {
 
-        static readonly Temp te = new Temp();
-        static readonly Health he=new Health();
+        static readonly temperature temperature = new temperature();
+        static readonly Health health=new Health();
         static readonly HttpClient Client = new HttpClient();
         private static string TempUri = "https://birthawebservice20181031094923.azurewebsites.net/api/environment";
         private static string HealthUri = "https://birthawebservice20181031094923.azurewebsites.net/api/health";
@@ -45,7 +45,7 @@ namespace BerthaUdpReciever
 
                 }
             }
-            catch (Exception e)
+           catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
@@ -53,9 +53,9 @@ namespace BerthaUdpReciever
 
         }
 
-        static async Task AddToPost(Temp Temp)
+        static async Task AddToPost(temperature temperature)
         {
-            var jsonString = JsonConvert.SerializeObject(Temp);
+            var jsonString = JsonConvert.SerializeObject(temperature);
             //Console.WriteLine("JSON:: " + jsonString);
             StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             try
@@ -159,16 +159,16 @@ namespace BerthaUdpReciever
                     
 
 
-                    he.UserId = UserId;
-                    he.BloodPressure = BloodPressure;
-                    he.HeartBeat = HeartBeat;
-                    he.Age = Age;
-                    he.Weight = Weight;
-                    he.DateTime = date;
+                    health.UserId = UserId;
+                    health.BloodPressure = BloodPressure;
+                    health.HeartBeat = HeartBeat;
+                    health.Age = Age;
+                    health.Weight = Weight;
+                    health.DateTime = DateTime.Now;
 
 
 
-                   AddToPostHealth(he).GetAwaiter().GetResult();
+                   AddToPostHealth(health).GetAwaiter().GetResult();
 
 
 
@@ -188,8 +188,8 @@ namespace BerthaUdpReciever
         static async Task Temp()
         {
             int UserId = 0;
-            decimal Humidity = 0;
-            decimal Temperature = 0;
+            decimal Humidity = (decimal) 0.2;
+            decimal Temperature = (decimal) 0.2;
             string Location = " ";
 
 
@@ -236,14 +236,14 @@ namespace BerthaUdpReciever
                     Humidity = Int32.Parse(text2);
                     Temperature = Int32.Parse(text3);
                     Location = text4;
-                    te.UserId = UserId;
-                    te.Humidity = Humidity;
-                    te.Temperatur = Temperature;
-                    te.Location = Location;
-                    te.DateTime = date;
+                    temperature.UserId = UserId;
+                    temperature.Humidity = Humidity;
+                    temperature.Temperatur = Temperature;
+                    temperature.Location = Location;
+                    temperature.DateTime = date;
 
 
-                    AddToPost(te).GetAwaiter().GetResult();
+                    AddToPost(temperature).GetAwaiter().GetResult();
 
 
 
