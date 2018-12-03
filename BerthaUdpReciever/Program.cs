@@ -188,8 +188,8 @@ namespace BerthaUdpReciever
         static async Task Temp()
         {
             int UserId = 0;
-            decimal Humidity = (decimal) 0.2;
-            decimal Temperature = (decimal) 0.2;
+            decimal Humidity = 0;
+            decimal Temperature = 0;
             string Location = " ";
 
 
@@ -233,8 +233,8 @@ namespace BerthaUdpReciever
                     string text4 = list4[1];
 
                     UserId = Int32.Parse(text1);
-                    Humidity = Int32.Parse(text2);
-                    Temperature = Int32.Parse(text3);
+                    Humidity = decimal.Parse(text2);
+                    Temperature = decimal.Parse(text3);
                     Location = text4;
                     temperature.UserId = UserId;
                     temperature.Humidity = Humidity;
