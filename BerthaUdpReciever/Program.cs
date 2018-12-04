@@ -22,7 +22,7 @@ namespace BerthaUdpReciever
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter -T- for temp Data, -H- for health data or stop \r\n");
+            Console.WriteLine("Enter -T- for temp Data, -H- for health data  -R- for raspberry or stop \r\n");
             string option = Console.ReadLine();
 
             try
@@ -39,6 +39,9 @@ namespace BerthaUdpReciever
                             case "H":
                                 Health().GetAwaiter().GetResult();
 
+                                break;
+                            case "R":
+                                recieveFromRas().GetAwaiter().GetResult();
                                 break;
                         }
                     }
@@ -200,7 +203,7 @@ namespace BerthaUdpReciever
             // This IPEndPoint will allow you to read datagrams sent from any ip-source on port 9000
 
 
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 9000);
+            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 7000);
 
             // receivingUdpClient.Connect(RemoteIpEndPoint); what is this used for ??
 
@@ -256,6 +259,48 @@ namespace BerthaUdpReciever
             }
 
             Console.WriteLine();
+        }
+
+        static async Task recieveFromRas()
+        {
+
+            using (UdpClient socket = new UdpClient(new IPEndPoint(IPAddress.Any, 7000)))
+            {
+                IPEndPoint remoteEndPoint = new IPEndPoint(0, 0);
+                while (true)
+                {
+                    Console.WriteLine("Waiting for broadcast {0}", socket.Client.LocalEndPoint);
+                    byte[] datagramReceived = socket.Receive(ref remoteEndPoint);
+                    string message = Encoding.ASCII.GetString(datagramReceived, 0, datagramReceived.Length);
+                    Console.WriteLine("Receives {0} bytes from {1} port {2} message {3}", datagramReceived.Length,
+                        remoteEndPoint.Address, remoteEndPoint.Port, message);
+                    string[] textLines = message.Split('\n');
+                    for (int index = 0; index < textLines.Length; index++)
+                        Console.Write(textLines[index]);
+
+                    string[] list0 = textLines[0].Split();
+                    string text0 = list0[1];
+                    string[] list1 = textLines[1].Split();
+                    string text1 = list1[1];
+                    int UserId = 90;
+                    decimal Humidity = 0;
+                    decimal Temperature = 0;
+                    string Location = "Roskilde";
+                    DateTime date = DateTime.Now;
+
+
+                    Humidity = decimal.Parse(text0);
+                    Temperature = decimal.Parse(text1);
+                    temperature.UserId = UserId;
+                    temperature.Humidity = Humidity;
+                    temperature.Temperatur = Temperature;
+                    temperature.Location = Location;
+                    temperature.DateTime = date;
+
+                    AddToPost(temperature).GetAwaiter().GetResult();
+
+                }
+            }
         }
 
     }
